@@ -1,15 +1,30 @@
 import sys, io, time
 import threading
+import random
 
 from cn_py_thread import CnPyThread
 
 if __name__ == '__main__':
     def main():
         count = 0
-        #iterations = 10
-        #INTERVAL = 15.0
-        iterations = 60
+        iterations = 10
         INTERVAL = 5.0
+        MU = 25.0
+        SIGMA = 10.0
+
+        if True:
+            print "iterations: " + str(iterations)
+            print "intervals:  " + str(INTERVAL)
+            print "mu:         " + str(MU)
+            print "sigma:      " + str(SIGMA)
+
+        random.seed()
+        if False:
+            for i in range(0, 100):
+                #r = random.gauss(100.0, 1.0)
+                r = random.gauss(0.0, 1.0)
+                print r
+            sys.exit(0)
 
         #
         # stop on clean intervals -- for example, if INTERVAL is 10.0, then
@@ -25,8 +40,8 @@ if __name__ == '__main__':
             time.sleep(t_sleep)
 
             # do something
-            print "awake:        " + str(time.time())
-            thread = CnPyThread(logmutex, "rbw-thr-" + str(count), 15.0, 5.0)
+            #print "awake:        " + str(time.time())
+            thread = CnPyThread(logmutex, "thr-" + str(count+1), MU, SIGMA)
             thread.start()
 
             #
@@ -41,9 +56,9 @@ if __name__ == '__main__':
 
         print "finished launching threads -- waiting for them all to complete"
         #
-        # todo: how do we catch terminating threads?
+        # todo: catch terminating threads, exit when last one is finished
         #
-        time.sleep(60.00)
+        time.sleep(MU * 4.0)
         print "terminationg process"
 
 
